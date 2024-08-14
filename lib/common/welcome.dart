@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:argeazy/shadecn/_ui.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import '../theme/theme.dart';
 import 'widget/animation.dart';
 import 'widget/splash.dart';
@@ -20,7 +22,8 @@ class _LandingPageState extends State<LandingPage> {
   List<Map<String, String>> splashData = [
     {
       "text": "As a customer, you can",
-      "body": """Order healthy fresh farm produce \nfrom vasrieties on our app.""",
+      "body":
+          """Order healthy fresh farm produce \nfrom vasrieties on our app.""",
       "image": "assets/svgs/cucumber.jpg",
     },
     {
@@ -64,83 +67,70 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                top: h(88, context),
-                right: w(24, context),
-                left: w(24, context)),
-            child: Container(
-              height: h(516, context),
-              width: w(327, context),
-              decoration: const BoxDecoration(
-                  color: Constants.black,
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: (value) {
-                        setState(() {
-                          currentPage = value;
-                        });
-                      },
-                      itemCount: splashData.length,
-                      itemBuilder: (context, index) => SplashContent(
-                        image: splashData[index]["image"],
-                        text: splashData[index]['text'],
-                        body: splashData[index]['body'],
-                        index: index,
+    return ShadTheme(
+      data: ShadThemeData(colorScheme: ShadColorScheme.lerp( startScheme , endScheme, 0.5), brightness: Brightness.dark),
+      child: Scaffold(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: h(88, context),
+                  right: w(24, context),
+                  left: w(24, context)),
+              child: Container(
+                height: h(516, context),
+                width: w(327, context),
+                decoration: const BoxDecoration(
+                    color: Constants.black,
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (value) {
+                          setState(() {
+                            currentPage = value;
+                          });
+                        },
+                        itemCount: splashData.length,
+                        itemBuilder: (context, index) => SplashContent(
+                          image: splashData[index]["image"],
+                          text: splashData[index]['text'],
+                          body: splashData[index]['body'],
+                          index: index,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: h(20, context)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        splashData.length,
-                        (index) => buildDot(context, currentPage, index: index),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: h(20, context)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          splashData.length,
+                          (index) => buildDot(context, currentPage, index: index),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(height: h(25, context)),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              padding: EdgeInsets.symmetric(
-                  horizontal: w(30, context), vertical: h(15, context)),
+            SizedBox(height: h(25, context)),
+            ShadButton.outline(
+              onPressed: () {
+                Navigator.pushNamed(context, "/login");
+              },
+              child: const Text("Sign In", style: TextStyle(color: Colors.white),),
             ),
-            child: const Text("Sign In"),
-          ),
-          SizedBox(height: h(25, context)),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              padding: EdgeInsets.symmetric(
-                  horizontal: w(30, context), vertical: h(15, context)),
-            ),
-            child: const Text("Sign Up"),
-          )
-        ],
+            SizedBox(height: h(25, context)),
+            ShadButton.outline(
+              onPressed: () {},
+              child: const Text("Sign Up", style: TextStyle(color: Colors.white),),
+            )
+          ],
+        ),
       ),
     );
   }
