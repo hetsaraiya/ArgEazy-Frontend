@@ -31,7 +31,7 @@ class _LogInState extends State<LogIn> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        left: w(70, context)),
+                        left: w(130, context)),
                     child: const Text(
                       'Log In',
                       style:
@@ -73,7 +73,7 @@ class _LogInState extends State<LogIn> {
                   SizedBox(height: h(16, context)),
                   Padding(
                     padding: EdgeInsets.only(
-                        left: w(40, context), top: h(20, context)),
+                        left: w(130, context), top: h(20, context)),
                     child: ShadButton(
                       child: const Text('Log In'),
                       onPressed: () {
