@@ -68,7 +68,9 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return ShadTheme(
-      data: ShadThemeData(colorScheme: ShadColorScheme.lerp( startScheme , endScheme, 0.5), brightness: Brightness.dark),
+      data: ShadThemeData(
+          colorScheme: ShadColorScheme.lerp(startScheme, endScheme, 0.5),
+          brightness: Brightness.dark),
       child: Scaffold(
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,7 +111,8 @@ class _LandingPageState extends State<LandingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                           splashData.length,
-                          (index) => buildDot(context, currentPage, index: index),
+                          (index) =>
+                              buildDot(context, currentPage, index: index),
                         ),
                       ),
                     ),
@@ -122,12 +125,20 @@ class _LandingPageState extends State<LandingPage> {
               onPressed: () {
                 Navigator.pushNamed(context, "/login");
               },
-              child: const Text("Sign In", style: TextStyle(color: Colors.white),),
+              child: const Text(
+                "Sign In",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             SizedBox(height: h(25, context)),
             ShadButton.outline(
-              onPressed: () {},
-              child: const Text("Sign Up", style: TextStyle(color: Colors.white),),
+              onPressed: () {
+                Navigator.pushNamed(context, "/signup");
+              },
+              child: const Text(
+                "Sign Up",
+                style: TextStyle(color: Colors.white),
+              ),
             )
           ],
         ),

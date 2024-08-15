@@ -1,4 +1,5 @@
 import 'package:argeazy/common/login.dart';
+import 'package:argeazy/common/signup.dart';
 import 'package:argeazy/common/welcome.dart';
 import 'package:flutter/material.dart';
 import 'theme/theme.dart';
@@ -25,8 +26,9 @@ class _ArgEazyState extends State<ArgEazy> {
       themeMode: ThemeMode.dark,
       initialRoute: '/',
       routes: {
-        '/' : (context) => const LandingPage(),
-        '/login' : (context) => const LogIn(),
+        '/': (context) => const LandingPage(),
+        '/login': (context) => const LogIn(),
+        '/signup': (context) => const SignUp(),
       },
     );
   }
