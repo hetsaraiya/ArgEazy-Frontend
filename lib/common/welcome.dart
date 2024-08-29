@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:argeazy/shadecn/_ui.dart';
+import '../shadecn/_ui.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import '../theme/theme.dart';
 import 'widget/animation.dart';

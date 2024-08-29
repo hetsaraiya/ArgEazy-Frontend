@@ -1,7 +1,8 @@
-import '../../shadecn/_ui.dart';
-import 'package:argeazy/size.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import '../shadecn/_ui.dart';
+import '../size.dart';
+import 'helpers/auth.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -32,17 +33,14 @@ class _LogInState extends State<LogIn> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(
-                          left: w(130, context)),
+                      padding: EdgeInsets.only(left: w(130, context)),
                       child: const Text(
                         'Log In',
-                        style:
-                            TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(
-                      height: h(150, context),
-                    ),
+                    SizedBox(height: h(150, context)),
                     ShadInputFormField(
                       id: 'username',
                       label: const Text('Username'),
@@ -73,23 +71,18 @@ class _LogInState extends State<LogIn> {
                       },
                     ),
                     SizedBox(height: h(16, context)),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: w(130, context), top: h(20, context)),
-                      child: ShadButton(
-                        child: const Text('Log In'),
-                        onPressed: () {
-                          final currentState = _formKey.currentState;
-                          if (currentState == null) {
-                            print('FormKey currentState is null.');
-                          } else if (currentState.saveAndValidate()) {
-                            print(
-                                'Validation succeeded with ${currentState.value}');
-                          } else {
-                            print('Validation failed');
+                    ShadButton(
+                      child: const Text('Log In'),
+                      onPressed: () async {
+                        if (validateForm(_formKey)) {
+                          if (validateForm(_formKey)) {
+                            final formData = _formKey.currentState!.value;
+                            final String username = formData['username'];
+                            final String password = formData['password'];
+                            login(context, username, password);
                           }
-                        },
-                      ),
+                        }
+                      },
                     ),
                   ],
                 ),
