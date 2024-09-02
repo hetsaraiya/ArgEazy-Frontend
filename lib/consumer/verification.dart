@@ -1,26 +1,24 @@
-import 'helpers/upload.verification.dart';
-import '../shadecn/_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
+import 'helper/upload.verification.dart';
+import '../shadecn/_ui.dart';
 import '../size.dart';
 
-class FarmerVerification extends StatefulWidget {
-  const FarmerVerification({super.key});
+class ConsumerVerification extends StatefulWidget {
+  const ConsumerVerification({Key? key}) : super(key: key);
 
   @override
-  State<FarmerVerification> createState() => _FarmerVerificationState();
+  State<ConsumerVerification> createState() => _ConsumerVerificationState();
 }
 
-class _FarmerVerificationState extends State<FarmerVerification> {
+class _ConsumerVerificationState extends State<ConsumerVerification> {
   File? _aadharCard;
   File? _panCard;
-  File? _sevenTwelveCopy;
   String _aadharCardName = '';
   String _panCardName = '';
-  String _sevenTwelveCopyName = '';
 
   Future<void> _pickFile(String field) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -36,16 +34,11 @@ class _FarmerVerificationState extends State<FarmerVerification> {
             _panCard = File(result.files.single.path!);
             _panCardName = result.files.single.name;
             break;
-          case 'sevenTwelve':
-            _sevenTwelveCopy = File(result.files.single.path!);
-            _sevenTwelveCopyName = result.files.single.name;
-            break;
         }
       });
-      print(
-          'File selected for $field: ${result.files.single.name}'); // Debug statement
+      print('File selected for $field: ${result.files.single.name}');
     } else {
-      print('No file selected for $field'); // Debug statement
+      print('No file selected for $field');
     }
   }
 
@@ -60,10 +53,6 @@ class _FarmerVerificationState extends State<FarmerVerification> {
           _panCard = null;
           _panCardName = '';
           break;
-        case 'sevenTwelve':
-          _sevenTwelveCopy = null;
-          _sevenTwelveCopyName = '';
-          break;
       }
     });
   }
@@ -71,19 +60,20 @@ class _FarmerVerificationState extends State<FarmerVerification> {
   void _uploadFiles() async {
     final prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString('access_token') ?? '';
-    const apiUrl = 'http://192.168.220.18:8000/api/v1/upload_verification_docs';
 
-    final result = await uploadVerificationDocs(
-        apiUrl, _aadharCard!, _panCard!, _sevenTwelveCopy!, accessToken);
+    if (_aadharCard != null && _panCard != null) {
+      final result = await uploadFiles(_aadharCard!, _panCard!, accessToken);
 
-    if (result['success']) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Files Uploaded Successfully!')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Upload failed: ${result['error']}')),
-      );
+      if (result['success']) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Files Uploaded Successfully!')),
+        );
+        Navigator.pushNamed(context, '/consumer/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Upload failed: ${result['error']}')),
+        );
+      }
     }
   }
 
@@ -122,13 +112,8 @@ class _FarmerVerificationState extends State<FarmerVerification> {
                           SizedBox(height: h(20, context)),
                           _buildFileField('PAN Card', _panCardName, 'pan'),
                           SizedBox(height: h(20, context)),
-                          _buildFileField(
-                              '7/12 Copy', _sevenTwelveCopyName, 'sevenTwelve'),
-                          SizedBox(height: h(20, context)),
                           ShadButton.outline(
-                            onPressed: (_aadharCard != null &&
-                                    _panCard != null &&
-                                    _sevenTwelveCopy != null)
+                            onPressed: (_aadharCard != null && _panCard != null)
                                 ? _uploadFiles
                                 : null,
                             child: const Text(

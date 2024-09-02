@@ -2,6 +2,7 @@ import 'models/ferm.dart';
 import 'widget/ferm.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import '../shadecn/_ui.dart';
+import '../size.dart';
 import 'package:flutter/material.dart';
 
 
@@ -33,9 +34,9 @@ class _PricesPageState extends State<PricesPage> {
         child: Scaffold(
           body: Column(
             children: [
-              const SizedBox(height: 50),
+              SizedBox(height: h(50, context)),
               ...items.map((item) => Padding(
-                padding: const EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.only(bottom: h(20, context)),
                 child: PriceItemWidget(item: item),
               )),
             ],

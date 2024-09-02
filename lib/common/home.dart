@@ -1,3 +1,4 @@
+import 'package:argeazy/common/content.home.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import "../shadecn/_ui.dart";
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
             });
           },
           children: const [
-            Placeholder(),
+            HomeContent(),
             Placeholder(),
             PricesPage(),
             Placeholder(),

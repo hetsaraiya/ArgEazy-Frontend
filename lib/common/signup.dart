@@ -18,7 +18,7 @@ class _SignUpState extends State<SignUp> {
     'consumer': 'Consumer',
   };
 
-  String? _selectedRole; 
+  String? _selectedRole;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +51,8 @@ class _SignUpState extends State<SignUp> {
                       ShadInputFormField(
                         id: 'username',
                         label: Text('Username'),
+                        cursorColor: Colors.white,
+                        showCursor: true,
                         placeholder: Text('Enter your username'),
                         validator: (v) {
                           if (v.isEmpty) {
@@ -66,6 +68,8 @@ class _SignUpState extends State<SignUp> {
                       ShadInputFormField(
                         id: 'password',
                         label: Text('Password'),
+                        cursorColor: Colors.white,
+                        showCursor: true,
                         placeholder: Text('Enter your password'),
                         validator: (v) {
                           if (v.isEmpty) {
@@ -80,6 +84,8 @@ class _SignUpState extends State<SignUp> {
                       SizedBox(height: h(16, context)),
                       ShadInputFormField(
                         id: 'email',
+                        cursorColor: Colors.white,
+                        showCursor: true,
                         label: Text('Email'),
                         placeholder: Text('Enter your email'),
                         validator: (v) {
@@ -95,6 +101,8 @@ class _SignUpState extends State<SignUp> {
                       SizedBox(height: h(16, context)),
                       ShadInputFormField(
                         id: 'phone',
+                        cursorColor: Colors.white,
+                        showCursor: true,
                         label: Text('Phone Number'),
                         placeholder: Text('Enter your phone number'),
                         keyboardType: TextInputType.phone,
@@ -123,27 +131,39 @@ class _SignUpState extends State<SignUp> {
                           });
                         },
                       ),
-                      ShadButton(
-                        child: const Text('Sign Up'),
-                        onPressed: () async {
-                          print("Pressed");
-                          if (validateForm(_formKey)) {
-                            final formData = _formKey.currentState!.value;
-                            final String username = formData['username'] ?? '';
-                            final String password = formData['password'] ?? '';
-                            final String email = formData['email'] ?? '';
-                            final String phone = formData['phone'] ?? '';
-                            final String role = _selectedRole ?? '';  // Use selected role from state
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: w(130, context), top: h(20, context)),
+                        child: ShadButton(
+                          child: const Text('Sign Up'),
+                          onPressed: () async {
+                            print("Pressed");
+                            if (validateForm(_formKey)) {
+                              final formData = _formKey.currentState!.value;
+                              final String username =
+                                  formData['username'] ?? '';
+                              final String password =
+                                  formData['password'] ?? '';
+                              final String email = formData['email'] ?? '';
+                              final String phone = formData['phone'] ?? '';
+                              final String role = _selectedRole ??
+                                  ''; // Use selected role from state
 
-                            // Validate role before proceeding
-                            if (username.isEmpty || password.isEmpty || email.isEmpty || phone.isEmpty || role.isEmpty) {
-                              print('All fields are required.');
-                              return;
+                              // Validate role before proceeding
+                              if (username.isEmpty ||
+                                  password.isEmpty ||
+                                  email.isEmpty ||
+                                  phone.isEmpty ||
+                                  role.isEmpty) {
+                                print('All fields are required.');
+                                return;
+                              }
+
+                              signup(context, username, password, email, phone,
+                                  role);
                             }
-
-                            signup(context, username, password, email, phone, role);
-                          }
-                        },
+                          },
+                        ),
                       ),
                     ],
                   ),

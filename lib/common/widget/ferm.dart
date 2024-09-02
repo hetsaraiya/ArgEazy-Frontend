@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../size.dart';
 import '../models/ferm.dart';
 
 class PriceItemWidget extends StatelessWidget {
@@ -10,15 +11,15 @@ class PriceItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 100,
-        width: 350,
+        height: h(100, context),
+        width: w(350, context),
         decoration: BoxDecoration(
           color: Colors.blueGrey,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           children: [
-            const SizedBox(width: 10),
+            SizedBox(width: w(10, context)),
             Text(item.name),
             const Spacer(),
             Text(item.description),

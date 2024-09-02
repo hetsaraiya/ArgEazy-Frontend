@@ -18,10 +18,10 @@ bool validateForm(GlobalKey<ShadFormState> formKey) {
   }
 }
 
-
 const String baseUrl = "http://192.168.220.18:8000/api/v1";
 
-Future<void> login(BuildContext context, String username, String password) async {
+Future<void> login(
+    BuildContext context, String username, String password) async {
   final url = Uri.parse('$baseUrl/login');
   final response = await http.post(
     url,
@@ -37,21 +37,24 @@ Future<void> login(BuildContext context, String username, String password) async
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-    // Store tokens
+    // Store tokens and user type
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('refresh_token', responseData['refresh']);
     await prefs.setString('access_token', responseData['access']);
-
-    // Navigate to home page
-    Navigator.pushNamed(context, '/');
+    await prefs.setString('user_type', responseData['user_type']);
+    Navigator.pushNamed(context, '/${responseData['user_type']}/home');
   } else {
     // Handle error
     print('Login failed: ${response.body}');
     // Show error message to the user
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Login failed: ${response.body}'),
+      ),
+    );
   }
 }
 
-/// Signup function
 Future<void> signup(BuildContext context, String username, String password,
     String email, String phone, String role) async {
   final url = Uri.parse('$baseUrl/signup');
@@ -71,11 +74,32 @@ Future<void> signup(BuildContext context, String username, String password,
   );
 
   if (response.statusCode == 201) {
-    // Navigate to home page
-    Navigator.pushNamed(context, '/');
+    // Parse the response data
+    final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+    // Extract tokens
+    final String refreshToken = responseData['refresh'];
+    final String accessToken = responseData['access'];
+
+    // Store tokens in SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('refresh_token', refreshToken);
+    await prefs.setString('access_token', accessToken);
+
+    // Navigate to the verification page
+    if (role == "consumer") {
+      Navigator.pushNamedAndRemoveUntil(context, '/consumer/verification', (route) => false,);
+    } else if (role == "farmer") {
+      Navigator.pushNamedAndRemoveUntil(context, '/farmer/verification', (route) => false);
+    }
   } else {
     // Handle error
     print('Signup failed: ${response.body}');
     // Show error message to the user
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Signup failed: ${response.body}'),
+      ),
+    );
   }
 }

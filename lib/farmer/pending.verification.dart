@@ -1,3 +1,4 @@
+import '../size.dart';
 import '../shadecn/_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -11,7 +12,7 @@ class PendingVerificationPage extends StatelessWidget {
       data: ShadThemeData(
           colorScheme: ShadColorScheme.lerp(startScheme, endScheme, 0.5),
           brightness: Brightness.dark),
-      child: const Scaffold(
+      child: Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -19,10 +20,10 @@ class PendingVerificationPage extends StatelessWidget {
               Icon(
                 Icons.cancel,
                 color: Colors.red,
-                size: 100.0,
+                size: w(170, context),
               ),
-              SizedBox(height: 20.0),
-              Text(
+              SizedBox(height: h(20, context)),
+              const Text(
                 'Your verification is still pending',
                 style: TextStyle(
                   fontSize: 20.0,
