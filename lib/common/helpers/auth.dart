@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,11 +19,9 @@ bool validateForm(GlobalKey<ShadFormState> formKey) {
   }
 }
 
-const String baseUrl = "http://192.168.220.18:8000/api/v1";
-
 Future<void> login(
     BuildContext context, String username, String password) async {
-  final url = Uri.parse('$baseUrl/login');
+  final url = Uri.parse('${dotenv.env["ENDPOINT"]}/login');
   final response = await http.post(
     url,
     headers: <String, String>{
@@ -42,11 +41,21 @@ Future<void> login(
     await prefs.setString('refresh_token', responseData['refresh']);
     await prefs.setString('access_token', responseData['access']);
     await prefs.setString('user_type', responseData['user_type']);
-    Navigator.pushNamed(context, '/${responseData['user_type']}/home');
+
+    final String userType = responseData['user_type'];
+    final bool verified = responseData['verified'];
+    final bool docsUploaded = responseData['docs_uploaded'];
+
+    if (!verified) {
+      Navigator.pushNamed(context, '/$userType/verification/pending');
+    } else if (!docsUploaded) {
+      Navigator.pushNamed(context, '/$userType/verification');
+    } else {
+      Navigator.pushNamed(context, '/$userType/home');
+    }
   } else {
     // Handle error
     print('Login failed: ${response.body}');
-    // Show error message to the user
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Login failed: ${response.body}'),
@@ -57,7 +66,8 @@ Future<void> login(
 
 Future<void> signup(BuildContext context, String username, String password,
     String email, String phone, String role) async {
-  final url = Uri.parse('$baseUrl/signup');
+  final url = Uri.parse('${dotenv.env["ENDPOINT"]}/signup');
+  print("Pressed");
   final response = await http.post(
     url,
     headers: <String, String>{
@@ -88,7 +98,11 @@ Future<void> signup(BuildContext context, String username, String password,
 
     // Navigate to the verification page
     if (role == "consumer") {
-      Navigator.pushNamedAndRemoveUntil(context, '/consumer/verification', (route) => false,);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/consumer/verification',
+        (route) => false,
+      );
     } else if (role == "farmer") {
       Navigator.pushNamedAndRemoveUntil(context, '/farmer/verification', (route) => false);
     }

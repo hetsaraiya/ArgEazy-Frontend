@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'helpers/upload.verification.dart';
 import '../shadecn/_ui.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +73,8 @@ class _FarmerVerificationState extends State<FarmerVerification> {
   void _uploadFiles() async {
     final prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString('access_token') ?? '';
-    const apiUrl = 'http://192.168.220.18:8000/api/v1/upload_verification_docs';
+    await dotenv.load(fileName: ".env");
+    String apiUrl = '${dotenv.env["ENDPOINT"]}/upload_verification_docs';
 
     final result = await uploadVerificationDocs(
         apiUrl, _aadharCard!, _panCard!, _sevenTwelveCopy!, accessToken);
@@ -80,6 +83,8 @@ class _FarmerVerificationState extends State<FarmerVerification> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Files Uploaded Successfully!')),
       );
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/login", (route) => false);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Upload failed: ${result['error']}')),

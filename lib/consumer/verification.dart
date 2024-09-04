@@ -68,7 +68,7 @@ class _ConsumerVerificationState extends State<ConsumerVerification> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Files Uploaded Successfully!')),
         );
-        Navigator.pushNamed(context, '/consumer/home');
+        Navigator.pushNamed(context, '/login');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Upload failed: ${result['error']}')),

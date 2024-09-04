@@ -13,12 +13,12 @@ dependencies:
 
   cupertino_icons: ^1.0.6
   flutter_solidart: ^1.7.1
-  flutter_dotenv: ^5.1.0
   http:
   shadcn_ui: ^0.8.0
   file_picker: ^8.1.2
   shared_preferences:
   google_translate:
+  flutter_dotenv:
 
 dev_dependencies:
   flutter_test:
@@ -42,3 +42,4 @@ flutter:
     - assets/
     - assets/svgs/
     - assets/images/
+    - .env

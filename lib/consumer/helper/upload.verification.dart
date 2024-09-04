@@ -1,10 +1,11 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 
 Future<Map<String, dynamic>> uploadFiles(
     File addharCard, File panCard, String token) async {
-  var uri =
-      Uri.parse('http://192.168.220.18:8000/api/v1/upload_verification_docs');
+  await dotenv.load(fileName: ".env");
+  var uri = Uri.parse('${dotenv.env["ENDPOINT"]}/upload_verification_docs_consumer');
 
   var request = http.MultipartRequest('POST', uri);
   request.headers['Authorization'] = 'Bearer $token';

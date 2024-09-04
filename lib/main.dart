@@ -1,5 +1,6 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'common/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'common/login.dart';
 import 'common/signup.dart';
 import 'common/welcome.dart';
@@ -11,7 +12,8 @@ import 'consumer/verification.dart';
 import 'theme/theme.dart';
 
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const ArgEazy());
 }
 
@@ -53,8 +55,9 @@ class _ArgEazyState extends State<ArgEazy> {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
-      initialRoute: '/',
+      initialRoute: '/splash',
       routes: {
+        '/splash': (context) => SplashScreen(),
         '/': (context) => const LandingPage(),
         '/login': (context) => const LogIn(),
         '/signup': (context) => const SignUp(),

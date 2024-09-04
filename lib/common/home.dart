@@ -1,4 +1,5 @@
-import 'package:argeazy/common/content.home.dart';
+import 'content.home.dart';
+import 'helpers/check.verified.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import "../shadecn/_ui.dart";
@@ -20,6 +21,12 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
     _pageController.jumpToPage(index);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkVerified(context);
   }
 
   @override
