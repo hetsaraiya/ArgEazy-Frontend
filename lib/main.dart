@@ -10,7 +10,9 @@ import 'package:argeazy/farmer/verification.dart';
 import 'package:flutter/material.dart';
 import 'consumer/verification.dart';
 import 'theme/theme.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 
+final shorebirdCodePush = ShorebirdCodePush();
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -29,6 +31,9 @@ class _ArgEazyState extends State<ArgEazy> {
   void initState() {
     super.initState();
     checkAccessToken();
+    shorebirdCodePush
+        .currentPatchNumber()
+        .then((value) => print('current patch number is $value'));
   }
 
   Future<void> checkAccessToken() async {
@@ -63,7 +68,8 @@ class _ArgEazyState extends State<ArgEazy> {
         '/signup': (context) => const SignUp(),
         '/consumer/verification': (context) => const ConsumerVerification(),
         '/farmer/verification': (context) => const FarmerVerification(),
-        '/farmer/verification/pending': (context) => const PendingVerificationPage(),
+        '/farmer/verification/pending': (context) =>
+            const PendingVerificationPage(),
         '/farmer/home': (context) => const HomePage(),
         '/consumer/home': (context) => const HomePage(),
       },

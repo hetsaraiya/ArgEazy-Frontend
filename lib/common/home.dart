@@ -1,3 +1,5 @@
+import 'package:argeazy/farmer/farmer.profile.dart';
+
 import 'content.home.dart';
 import 'helpers/check.verified.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,7 @@ class _HomePageState extends State<HomePage> {
             HomeContent(),
             Placeholder(),
             PricesPage(),
-            Placeholder(),
+            FarmerProfile()
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
